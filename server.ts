@@ -1,30 +1,67 @@
-import { serve } from 'https://deno.land/std@0.90.0/http/server.ts';
-import { GraphQLHTTP } from 'https://deno.land/x/gql/mod.ts';
-import { makeExecutableSchema } from 'https://deno.land/x/graphql_tools/mod.ts';
-import { gql } from 'https://deno.land/x/graphql_tag/mod.ts';
+import {
+  Application,
+  Router,
+  RouterContext,
+} from 'https://deno.land/x/oak@v6.2.0/mod.ts';
 
-const typeDefs = gql`
+import { applyGraphQL, gql } from 'https://deno.land/x/oak_graphql/mod.ts';
+
+const app = new Application();
+
+const types = gql`
+  type User {
+    id: Int
+    first_name: String
+    last_name: String
+  }
+
+  type UserOutput {
+    id: Int
+  }
+
   type Query {
-    hello: String
+    fetchUser(id: Int): User
+  }
+
+  type Mutation {
+    insertUser(first_name: String!, last_name: String!): UserOutput!
   }
 `;
 
 const resolvers = {
   Query: {
-    hello: () => `Hello world`,
+    fetchUser: (parent: any, { id }: any, context: any, info: any) => {
+      // make database calls or http requests inside and return data
+      return {
+        id: 1,
+        first_name: 'Mannuel',
+        last_name: 'Ferreira',
+      };
+    },
+  },
+  Mutation: {
+    insertUser: (
+      parent: any,
+      { first_name, last_name }: any,
+      context: any,
+      info: any
+    ) => {
+      return {
+        id: 1,
+      };
+    },
   },
 };
 
-const schema = makeExecutableSchema({ resolvers, typeDefs });
+const GraphQLService = await applyGraphQL<Router>({
+  Router,
+  typeDefs: types,
+  resolvers: resolvers,
+  context: (ctx: RouterContext) => {
+    return { user: 'Mannuel' };
+  },
+});
 
-const server = serve({ port: 5000 });
+app.use(GraphQLService.routes(), GraphQLService.allowedMethods());
 
-for await (const req of server) {
-  req.url.startsWith('/graphql')
-    ? await GraphQLHTTP({
-        schema,
-        graphiql: true,
-      })(req)
-    : req.respond({ status: 404 });
-}
-export default {};
+await app.listen({ port: 8090 });
