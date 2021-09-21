@@ -7,7 +7,8 @@ import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 
 import { __prod__ } from './constants';
 import mikroOrmConfig from './config/mikro-orm';
-import { HiResolver } from './resolvers/hi';
+import { Hi } from './resolvers/Hi';
+import { User } from './resolvers/User';
 
 const start = async () => {
   const PORT = 4000;
@@ -18,7 +19,7 @@ const start = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HiResolver],
+      resolvers: [Hi, User],
       validate: false,
     }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
