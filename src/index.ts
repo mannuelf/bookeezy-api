@@ -1,15 +1,17 @@
-import express from 'express';
 import http from 'http';
+import express from 'express';
 import { MikroORM } from '@mikro-orm/core';
-import { __prod__ } from './constants';
-import mikroOrmConfig from '@config/mikro-orm';
 import { ApolloServer } from 'apollo-server-express';
-import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import { buildSchema } from 'type-graphql';
+import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
+
+import { __prod__ } from './constants';
+import mikroOrmConfig from './config/mikro-orm';
 import { HiResolver } from './resolvers/hi';
 
 const start = async () => {
   const PORT = 4000;
+  const orm = await MikroORM.init(mikroOrmConfig);
   const app = express();
   const httpServer = http.createServer(app);
   const apolloServer = new ApolloServer({
@@ -18,7 +20,7 @@ const start = async () => {
       validate: false,
     }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-    context: () => ({}),
+    context: () => ({ em: orm.em }),
   });
 
   await apolloServer.start();

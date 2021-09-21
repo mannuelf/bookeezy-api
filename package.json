@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "watch": "tsc -w",
-    "start": "nodemon dist/index.js",
-    "dev": "nodemon dist/index.js",
-    "dev:ts": "nodemon --exec ts-node src/index.ts",
+    "start": "nodemon ./dist/index.js",
+    "dev": "nodemon ./dist/index.js",
+    "dev:ts": "nodemon --exec ts-node ./src/index.ts",
     "migration:create": "npx mikro-orm migration:create",
     "migration:list": "npx mikro-orm migration:list"
   },
