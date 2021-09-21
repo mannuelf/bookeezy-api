@@ -33,6 +33,18 @@ Run in development mode with type checking:
 yarn dev:ts
 ```
 
+# GraphQL
+
+Start server
+
+```bash
+yarn dev:ts
+```
+
+Should see:
+
+![image](https://user-images.githubusercontent.com/210504/134149956-6c794560-60f3-4e2b-969b-0786fd5c8a35.png)
+
 ## 2. Kubernetes
 
 ### Preferred method
