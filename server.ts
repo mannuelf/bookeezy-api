@@ -3,9 +3,9 @@ import {
   Router,
   RouterContext,
 } from 'https://deno.land/x/oak@v6.2.0/mod.ts';
-
 import { applyGraphQL, gql } from 'https://deno.land/x/oak_graphql/mod.ts';
 
+let count = 0;
 const app = new Application();
 
 const types = gql`
@@ -13,6 +13,7 @@ const types = gql`
     id: Int
     first_name: String
     last_name: String
+    email: String
   }
 
   type UserOutput {
