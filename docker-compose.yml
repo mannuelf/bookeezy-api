@@ -1,5 +1,6 @@
 version: '3.9'
-networks: bookeezy
+networks:
+  bookeezy:
 services:
   postgresql:
     image: postgres:latest

@@ -9,11 +9,21 @@ Local development has two options:
 
 Download & install Docker for desktop [here](https://www.docker.com/get-started) or Docker compose [here](https://docs.docker.com/compose/)
 
+### Database
+
 To create the PostgreSQL database run:
 
 ```bash
 docker-compose up -d
 ```
+
+Exec into container check it's working as should be:
+
+```bash
+docker exec -it bookeezy-api_postgresql_1  /bin/sh;
+```
+
+### Node
 
 Install dependencies:
 
@@ -33,7 +43,7 @@ Run in development mode with type checking:
 yarn dev:ts
 ```
 
-# GraphQL
+## GraphQL
 
 Start server
 
@@ -53,16 +63,27 @@ Install minikube [https://minikube.sigs.k8s.io/](www.minikube.sigs.k8s.io)
 
 ```bash
 minikube start
+```
 
+```bash
 minikube pause
+```
+
+Don't lose you environment, run this before putting computer to sleep or if you not working with minikube.
+
+```bash
 minikube unpause
+```
 
+```bash
 minikube stop
+```
 
+```bash
 minikube delete
 ```
 
-Change docker env context to minikube
+Change docker env context to minikube (add this to your .bash_profile or .zshrc)
 
 ```bash
 eval $(minikube docker-env)
