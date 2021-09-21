@@ -3,11 +3,12 @@ import { MikroORM } from '@mikro-orm/core';
 import { __prod__ } from '../constants';
 import { Hi } from '../entities/Hi';
 import { User } from '../entities/User';
+import { Book } from '../entities/Book';
 
 export default {
   type: 'postgresql',
   clientUrl: 'postgres://root:root@192.168.64.6:30432/bookeezydb',
-  entities: [Hi, User],
+  entities: [Hi, User, Book],
   dbName: 'bookeezydb',
   user: 'root',
   password: 'root',

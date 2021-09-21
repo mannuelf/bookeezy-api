@@ -9,6 +9,7 @@ import { __prod__ } from './constants';
 import mikroOrmConfig from './config/mikro-orm';
 import { Hi } from './resolvers/Hi';
 import { User } from './resolvers/User';
+import { Book } from './resolvers/Book';
 
 const start = async () => {
   const PORT = 4000;
@@ -19,7 +20,7 @@ const start = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [Hi, User],
+      resolvers: [Hi, User, Book],
       validate: false,
     }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
