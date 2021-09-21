@@ -9,7 +9,7 @@
     "migration:create": "npx mikro-orm migration:create",
     "migration:list": "npx mikro-orm migration:list"
   },
-  "description": "building stuff",
+  "description": "A book repository API, offers a way to save books to a central place with the help of community.",
   "main": "./src/index.js",
   "author": "Mannuel Ferreira <mannuel.ferreira@gmail.com>",
   "license": "MIT",

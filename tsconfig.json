@@ -24,7 +24,8 @@
     "paths": {
       "@entities/*": ["entities/*"],
       "@migrations/*": ["migrations/*"],
-      "@resolvers/*": ["resolvers/*"]
+      "@resolvers/*": ["resolvers/*"],
+      "@config/*": ["config/*"]
     }
   },
   "exclude": ["./node_modules"],
