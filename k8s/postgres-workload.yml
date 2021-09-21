@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookeezy-api-db
+spec:
+  selector:
+    matchLabels:
+      app: bookeezy-api-db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bookeezy-api-db
+    spec:
+      containers:
+        - name: bookeezy-api-db
+          image: postgres:latest
+          imagePullPolicy: 'IfNotPresent'
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb
+          resources:
+            limits:
+              memory: '256MB'
+              cpu: '500m'
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: bookeezy-api-pv-volume
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: bookeezy-api-pv-volume
+  labels:
+    type: local
+    app: bookeezy-api-db
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: '/mnt/data'
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: bookeezy-api-pv-claim
+  labels:
+    app: bookeezy-api-db
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: bookeezy-api-db
+data:
+  POSTGRES_DB: bookeezidb
+  POSTGRES_USER: root
+  POSTGRES_PASSWORD: root
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookeezy-api-db
+  labels:
+    app: bookeezy-api-db
+spec:
+  ports:
+    - name: bookeezy-api-db
+      port: 5432
+      nodePort: 30432
+  type: NodePort
+  selector:
+    app: bookeezy-api-db

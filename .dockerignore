@@ -1,0 +1,6 @@
+.git/
+.gitignore
+data/
+LICENSE
+node_modules/
+README.md

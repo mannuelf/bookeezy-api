@@ -1,12 +1,8 @@
-FROM hayd/alpine-deno:1.7.2
-
-EXPOSE 8090
+FROM node:alpine
 
 WORKDIR /app
+COPY package.json ./
+RUN yarn
+COPY ./ ./
 
-USER deno
-
-COPY . .
-RUN deno cache server.ts
-
-CMD ["run", "--allow-net", "server.ts"]
+CMD ["yarn", "start"]
