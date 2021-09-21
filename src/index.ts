@@ -12,8 +12,10 @@ import { HiResolver } from './resolvers/hi';
 const start = async () => {
   const PORT = 4000;
   const orm = await MikroORM.init(mikroOrmConfig);
+
   const app = express();
   const httpServer = http.createServer(app);
+
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [HiResolver],
@@ -26,8 +28,7 @@ const start = async () => {
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });
   await new Promise((resolve: any) => httpServer.listen({ port: PORT, resolve }));
-
-  console.log(`🚀 Server started: ${PORT}, ${apolloServer.graphqlPath}`);
+  console.log(`🚀 Server running on port: ${PORT}, path: ${apolloServer.graphqlPath}`);
 };
 
 start().catch((err) => {
