@@ -21,13 +21,13 @@ spec:
                 name: postgres-config
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: postgredb
+              name: postgresdb
           resources:
             limits:
               memory: '256MB'
               cpu: '500m'
       volumes:
-        - name: postgredb
+        - name: postgresdb
           persistentVolumeClaim:
             claimName: bookeezy-api-pv-volume
 ---
@@ -60,7 +60,6 @@ spec:
   resources:
     requests:
       storage: 1Gi
-
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -69,7 +68,7 @@ metadata:
   labels:
     app: bookeezy-api-db
 data:
-  POSTGRES_DB: bookeezidb
+  POSTGRES_DB: bookeezydb
   POSTGRES_USER: root
   POSTGRES_PASSWORD: root
 ---
