@@ -1,0 +1,16 @@
+version: '3.9'
+networks: bookeezy
+services:
+  postgresql:
+    image: postgres:latest
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=bookeezydb
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    volumes:
+      - /var/lib/postgresql/data
+    networks:
+      - bookeezy
