@@ -20,7 +20,23 @@ docker-compose up -d
 Exec into container check it's working as should be:
 
 ```bash
-docker exec -it bookeezy-api_postgresql_1  /bin/sh;
+docker exec -it bookeezy-api_postgresql_1 /bin/sh;
+```
+
+Connect application to the DB via Mikro-orm connector
+
+```javascript
+export default {
+  type: 'postgresql',
+  entities: [Hi, User, Book],
+  dbName: 'bookeezydb', // HERE
+  user: 'root', // HERE
+  password: 'root', // HERE
+  migrations: {
+    path: path.join(__dirname, './migrations'),
+    pattern: /^[\w-]+\d+\.[tj]s$/,
+  },
+};
 ```
 
 ### Node
