@@ -20,7 +20,7 @@ export class Book {
 
   @Field()
   @MaxLength(4)
-  NoOfPages!: string;
+  NumberOfPages!: string;
 
   @Field()
   @MaxLength(10)
