@@ -1,5 +1,20 @@
 # Bookeezy API
 
+Local development has two options:
+
+1. Docker with standard Node.js and npm workflow, with a Docker PostgreSQL database container with mounted persistent volumes.
+2. Kubernetes with Docker using Minikube.
+
+## 1. Docker and Node.js
+
+Download & install Docker for desktop [here](https://www.docker.com/get-started) or Docker compose [here](https://docs.docker.com/compose/)
+
+To create the PostgreSQL database run:
+
+```bash
+docker-compose up -d
+```
+
 Install dependencies:
 
 ```bash
@@ -12,25 +27,10 @@ Run nodemon server which serves up the `dist` folder:
 yarn watch
 ```
 
-Run in development mode:
+Run in development mode with type checking:
 
 ```bash
 yarn dev:ts
-```
-
-## Database
-
-Two options:
-
-1. Docker PostgreSQL container with mounted persistent volumes.
-2. Kubernetes, minikube
-
-## 1. Docker
-
-Install Docker for desktop and run command to start a container. This is the easiest option of the two.
-
-```bash
-docker-compose up -d
 ```
 
 ## 2. Kubernetes
@@ -64,11 +64,13 @@ Start the PostgreSQL service.
 - ConfigMap
 - Service
 
+To start k8's env, cd into k8's folder and run command below:
+
 ```bash
-kubectl apply -f k8s/postgres-workload.yml
+kubectl apply -f postgres-workload.yml
 ```
 
-Other useful Kubernetes commands
+### Other useful Kubernetes commands
 
 ```bash
 kubectl create -f webserver.yml
@@ -80,37 +82,37 @@ Test to see if it worked
 kubectl get replicasets
 ```
 
-### Create service
+#### Create service
 
 ```bash
 kubectl create -f webserver-scv.yml
 ```
 
-### Expose service
+#### Expose service
 
 ```bash
 kubectl expose deployment webserver --name=web-service --type=NodePort
 ```
 
-### Get pods
+#### Get pods
 
 ```bash
 kubectl get po
 ```
 
-### List services
+#### List services
 
 ```bash
 kubectl get svc
 ```
 
-### Describe service
+#### Describe service
 
 ```bash
 kubectl describe service db-service
 ```
 
-### Minikube IP
+#### Minikube IP
 
 Application is running on the Minikube VM, so get the IP
 
@@ -118,7 +120,7 @@ Application is running on the Minikube VM, so get the IP
 minikube ip
 ```
 
-### Launch service in the browser
+#### Launch service in the browser
 
 ```bash
 minikube service web-service-name
