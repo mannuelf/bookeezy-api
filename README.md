@@ -73,9 +73,31 @@ Should see:
 
 ## 2. Kubernetes
 
-### Preferred method
+Install [minikube](www.minikube.sigs.k8s.io) & [kubectl](https://kubernetes.io/docs/tasks/tools/) , out of scope for this guide.
 
-Install minikube [https://minikube.sigs.k8s.io/](www.minikube.sigs.k8s.io)
+### PostgreSQL
+
+Start the PostgreSQL service.
+
+To start k8's env, cd into k8's folder and run command below:
+
+```bash
+kubectl apply -f postgres-workload.yml
+```
+
+That will create:
+
+- Deployment
+- PersistentVolume
+- PersistentVolumeClaim
+- ConfigMap
+- Service
+
+Check if everything works:
+
+```bash
+kubectl get svc,deploy,po,persistentvolume,persistentvolumeclaims,configmaps
+```
 
 ```bash
 minikube start
@@ -103,20 +125,6 @@ Change docker env context to minikube (add this to your .bash_profile or .zshrc)
 
 ```bash
 eval $(minikube docker-env)
-```
-
-Start the PostgreSQL service.
-
-- Deployment
-- PersistentVolume
-- PersistentVolumeClaim
-- ConfigMap
-- Service
-
-To start k8's env, cd into k8's folder and run command below:
-
-```bash
-kubectl apply -f postgres-workload.yml
 ```
 
 ### Other useful Kubernetes commands

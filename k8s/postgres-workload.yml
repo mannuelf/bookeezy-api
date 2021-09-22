@@ -22,10 +22,6 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgresdb
-          resources:
-            limits:
-              memory: '256MB'
-              cpu: '500m'
       volumes:
         - name: postgresdb
           persistentVolumeClaim:
