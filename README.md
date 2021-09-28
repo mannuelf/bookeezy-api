@@ -28,7 +28,7 @@ Connect application to the DB via Mikro-orm connector
 ```javascript
 export default {
   type: 'postgresql',
-  entities: [Hi, User, Book],
+  entities: [User, Book],
   dbName: 'bookeezydb', // HERE
   user: 'root', // HERE
   password: 'root', // HERE
@@ -61,13 +61,13 @@ yarn dev:ts
 
 ## GraphQL
 
-Start server
+Start GraphQL Server
 
 ```bash
 yarn dev:ts
 ```
 
-Should see:
+At [http://localhost:4000/graphql](http://localhost:4000/graphql), you should see:
 
 ![image](https://user-images.githubusercontent.com/210504/134149956-6c794560-60f3-4e2b-969b-0786fd5c8a35.png)
 
