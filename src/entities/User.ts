@@ -10,6 +10,18 @@ export class User {
 
   @Field(() => String)
   @Property({ type: 'text' })
+  username!: string;
+
+  @Field(() => String)
+  @Property({ type: 'text' })
+  email!: string;
+
+  @Field(() => String)
+  @Property({ type: 'text' })
+  password!: string;
+
+  @Field(() => String)
+  @Property({ type: 'text' })
   firstName!: string;
 
   @Field(() => String)
@@ -23,14 +35,6 @@ export class User {
   @Field(() => String)
   @Property({ type: 'text' })
   birthday!: string;
-
-  @Field(() => String)
-  @Property({ type: 'text' })
-  email!: string;
-
-  @Field(() => String)
-  @Property({ type: 'text' })
-  password!: string;
 
   @Field(() => String)
   @Property({ type: 'date' })

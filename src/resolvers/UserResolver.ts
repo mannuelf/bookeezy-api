@@ -1,17 +1,8 @@
 import 'reflect-metadata';
-import { User } from '../entities/User';
-import {
-  Resolver,
-  Query,
-  Ctx,
-  InputType,
-  Field,
-  ObjectType,
-  Mutation,
-  Arg,
-} from 'type-graphql';
+import { Resolver, Ctx, InputType, Field, ObjectType, Mutation, Arg } from 'type-graphql';
+import argon2 from 'argon2';
 import { MyContext } from 'src/types';
-import { StringValueNode } from 'graphql';
+import { User } from '../entities/User';
 
 @InputType()
 class InputUsernamePassword {
@@ -49,13 +40,29 @@ export class UserResolver {
   ): Promise<UserResponse> {
     console.log(options);
 
-    const user = {};
+    const hashedPassword = await argon2.hash(options.password);
+    const user = em.create(User, {
+      username: options.username,
+      password: hashedPassword,
+    });
+
+    try {
+      await em.persistAndFlush(user);
+    } catch (error) {
+      console.log(error);
+
+      if (error.details.includes('already exists')) {
+        return {
+          errors: [{ field: 'username', message: 'username exists' }],
+        };
+      }
+    }
+
     return { user };
   }
 
   @Mutation(() => UserResponse)
   async login(): Promise<UserResponse> {
-    const user = {};
-    return { user };
+    return {};
   }
 }
