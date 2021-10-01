@@ -15,6 +15,9 @@ const start = async () => {
   const PORT = 4000;
   const orm = await MikroORM.init(mikroOrmConfig);
 
+  const hi = orm.em.create(Hi, { content: 'hello world' });
+  await orm.em.persistAndFlush(hi);
+
   const app = express();
   const httpServer = http.createServer(app);
 
