@@ -1,14 +1,13 @@
 import path from 'path';
 import { MikroORM } from '@mikro-orm/core';
 import { __prod__ } from '../constants';
-import { Hi } from '../entities/Hi';
 import { User } from '../entities/User';
 import { Book } from '../entities/Book';
 
 export default {
   type: 'postgresql',
   clientUrl: 'postgres://root:root@192.168.64.11:30432/postgres',
-  entities: [Hi, User, Book],
+  entities: [User, Book],
   dbName: 'bookeezydb',
   user: 'postgres',
   password: 'root',

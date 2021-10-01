@@ -7,7 +7,6 @@ import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 
 import { __prod__ } from './constants';
 import mikroOrmConfig from './config/mikro-orm';
-import { Hi } from './resolvers/Hi';
 import { User } from './resolvers/User';
 import { Book } from './resolvers/Book';
 
@@ -15,15 +14,12 @@ const start = async () => {
   const PORT = 4000;
   const orm = await MikroORM.init(mikroOrmConfig);
 
-  const hi = orm.em.create(Hi, { content: 'hello world' });
-  await orm.em.persistAndFlush(hi);
-
   const app = express();
   const httpServer = http.createServer(app);
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [Hi, User, Book],
+      resolvers: [User, Book],
       validate: false,
     }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
