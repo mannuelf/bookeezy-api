@@ -11,15 +11,13 @@ export class Book {
 
   @Field({ description: 'The title of the book' })
   @Property({ type: 'text' })
-  @MaxLength(90)
   title!: string;
 
   @Field()
-  @MaxLength(40)
   author!: string;
 
   @Field()
-  @MaxLength(4)
+  @MaxLength(6)
   NumberOfPages!: string;
 
   @Field()
@@ -31,7 +29,6 @@ export class Book {
   ISBN13?: string;
 
   @Field()
-  @MaxLength(30)
   publisher!: string;
 
   @Field()
