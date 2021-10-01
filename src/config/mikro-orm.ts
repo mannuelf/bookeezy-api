@@ -6,7 +6,7 @@ import { Book } from '../entities/Book';
 
 export default {
   type: 'postgresql',
-  clientUrl: 'postgres://root:root@192.168.64.11:30432/postgres',
+  clientUrl: 'postgres://root:root@192.168.64.11:30432/bookeezydb',
   entities: [User, Book],
   dbName: 'bookeezydb',
   user: 'postgres',
