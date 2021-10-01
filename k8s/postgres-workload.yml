@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bookeezy-api-db
+  name: postgres-bookeezy
 spec:
   selector:
     matchLabels:
-      app: bookeezy-api-db
+      app: postgres-bookeezy
   replicas: 1
   template:
     metadata:
       labels:
-        app: bookeezy-api-db
+        app: postgres-bookeezy
     spec:
       containers:
-        - name: bookeezy-api-db
+        - name: postgres
           image: postgres:latest
           imagePullPolicy: 'IfNotPresent'
           envFrom:
@@ -21,19 +21,19 @@ spec:
                 name: postgres-config
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: postgresdb
+              name: postgredb
       volumes:
-        - name: postgresdb
+        - name: postgredb
           persistentVolumeClaim:
-            claimName: bookeezy-api-pv-volume
+            claimName: postgres-bookeezy-pv-claim
 ---
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: bookeezy-api-pv-volume
+  name: postgres-pv-volume
   labels:
     type: local
-    app: bookeezy-api-db
+    app: postgres-bookeezy
 spec:
   storageClassName: manual
   capacity:
@@ -46,9 +46,9 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: bookeezy-api-pv-claim
+  name: postgres-bookeezy-pv-claim
   labels:
-    app: bookeezy-api-db
+    app: postgres-bookeezy
 spec:
   storageClassName: manual
   accessModes:
@@ -62,23 +62,23 @@ kind: ConfigMap
 metadata:
   name: postgres-config
   labels:
-    app: bookeezy-api-db
+    app: postgres-bookeezy
 data:
   POSTGRES_DB: bookeezydb
-  POSTGRES_USER: root
+  POSTGRES_USER: postgres
   POSTGRES_PASSWORD: root
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: bookeezy-api-db
+  name: postgres-bookeezy
   labels:
-    app: bookeezy-api-db
+    app: postgres-bookeezy
 spec:
   ports:
-    - name: bookeezy-api-db
+    - name: postgres-bookeezy
       port: 5432
       nodePort: 30432
   type: NodePort
   selector:
-    app: bookeezy-api-db
+    app: postgres-bookeezy
