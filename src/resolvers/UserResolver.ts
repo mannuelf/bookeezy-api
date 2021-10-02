@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Resolver, Ctx, InputType, Field, ObjectType, Mutation, Arg } from 'type-graphql';
 import argon2 from 'argon2';
-import { MyContext } from 'src/types';
+import { MyContext } from '../types';
 import { User } from '../entities/User';
 
 @InputType()
@@ -50,8 +50,7 @@ export class UserResolver {
       await em.persistAndFlush(user);
     } catch (error) {
       console.log(error);
-
-      if (error.details.includes('already exists')) {
+      if (error) {
         return {
           errors: [{ field: 'username', message: 'username exists' }],
         };
