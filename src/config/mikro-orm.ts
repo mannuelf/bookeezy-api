@@ -1,8 +1,8 @@
 import path from 'path';
 import { MikroORM } from '@mikro-orm/core';
 import { __prod__ } from '../constants';
-import { User } from '../entities/User';
-import { Book } from '../entities/Book';
+import { User } from '@entities/User';
+import { Book } from '@entities/Book';
 
 export default {
   type: 'postgresql',

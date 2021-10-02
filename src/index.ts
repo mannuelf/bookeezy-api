@@ -4,8 +4,8 @@ import { MikroORM } from '@mikro-orm/core';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
-import { __prod__ } from './constants';
-import mikroOrmConfig from './config/mikro-orm';
+import { __prod__ } from '';
+import mikroOrmConfig from '@config/mikro-orm';
 import { UserResolver } from './resolvers/UserResolver';
 import { Book } from './resolvers/Book';
 
