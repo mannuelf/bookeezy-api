@@ -2,10 +2,10 @@ import 'reflect-metadata';
 import { Resolver, Ctx, InputType, Field, ObjectType, Mutation, Arg } from 'type-graphql';
 import argon2 from 'argon2';
 import { MyContext } from '../types';
-import { User } from '@entities/User';
+import { User } from '../entities/User';
 
 @InputType()
-class InputUsernamePassword {
+class InputEmailPassword {
   @Field()
   email: string;
 
@@ -35,7 +35,7 @@ class UserResponse {
 export class UserResolver {
   @Mutation(() => UserResponse)
   async register(
-    @Arg('options') options: InputUsernamePassword,
+    @Arg('options') options: InputEmailPassword,
     @Ctx() { em }: MyContext,
   ): Promise<UserResponse> {
     const hashedPassword = await argon2.hash(options.password);
@@ -60,7 +60,34 @@ export class UserResolver {
   }
 
   @Mutation(() => UserResponse)
-  async login(): Promise<UserResponse> {
-    return {};
+  async login(
+    @Arg('options') options: InputEmailPassword,
+    @Ctx() { em }: MyContext,
+  ): Promise<UserResponse> {
+    const user = await em.findOne(User, { email: options.email });
+
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: 'email',
+            message: 'user does not exist',
+          },
+        ],
+      };
+    }
+
+    const valid = await argon2.verify(user.password, options.password);
+    if (!valid) {
+      return {
+        errors: [
+          {
+            field: 'password',
+            message: 'incorrect password please try again or reset it.',
+          },
+        ],
+      };
+    }
+    return { user };
   }
 }

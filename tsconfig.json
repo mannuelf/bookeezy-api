@@ -3,14 +3,13 @@
     "target": "ES6",
     "module": "commonjs",
     "lib": ["ESNext", "esnext.asynciterable"],
-    "outDir": "./dist",
-    "baseUrl": "./src",
+    "outDir": "dist",
+    "baseUrl": "src",
     "paths": {
-      "@config/*": ["config/*"],
-      "@constants/*": ["constants/*"],
-      "@entities/*": ["entities/*"],
-      "@migrations/*": ["migrations/*"],
-      "@resolvers/*": ["resolvers/*"]
+      "config/*": ["config/*"],
+      "entities/*": ["entities/*"],
+      "migrations/*": ["migrations/*"],
+      "resolvers/*": ["resolvers/*"]
     },
     "allowSyntheticDefaultImports": true,
     "declaration": true,
