@@ -9,7 +9,7 @@ export class User {
   id!: number;
 
   @Field(() => String)
-  @Property({ type: 'text' })
+  @Property({ type: 'text', nullable: true })
   username!: string;
 
   @Field(() => String)
@@ -21,20 +21,20 @@ export class User {
   password!: string;
 
   @Field(() => String)
-  @Property({ type: 'text' })
-  firstName!: string;
+  @Property({ type: 'text', nullable: true })
+  firstName?: string;
 
   @Field(() => String)
-  @Property({ type: 'text' })
-  lastName!: string;
+  @Property({ type: 'text', nullable: true })
+  lastName?: string;
 
   @Field(() => String)
-  @Property({ type: 'text' })
-  location!: string;
+  @Property({ type: 'text', nullable: true })
+  location?: string;
 
   @Field(() => String)
-  @Property({ type: 'text' })
-  birthday!: string;
+  @Property({ type: 'text', nullable: true })
+  birthday?: string;
 
   @Field(() => String)
   @Property({ type: 'date' })

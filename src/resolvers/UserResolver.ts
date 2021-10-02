@@ -7,7 +7,7 @@ import { User } from '../entities/User';
 @InputType()
 class InputUsernamePassword {
   @Field()
-  username: string;
+  email: string;
 
   @Field()
   password: string;
@@ -38,11 +38,10 @@ export class UserResolver {
     @Arg('options') options: InputUsernamePassword,
     @Ctx() { em }: MyContext,
   ): Promise<UserResponse> {
-    console.log(options);
-
     const hashedPassword = await argon2.hash(options.password);
+
     const user = em.create(User, {
-      username: options.username,
+      email: options.email,
       password: hashedPassword,
     });
 
@@ -50,9 +49,9 @@ export class UserResolver {
       await em.persistAndFlush(user);
     } catch (error) {
       console.log(error);
-      if (error) {
+      if (error.detail.includes('exists')) {
         return {
-          errors: [{ field: 'username', message: 'username exists' }],
+          errors: [{ field: 'email', message: 'User already exists' }],
         };
       }
     }
