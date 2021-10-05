@@ -8,6 +8,7 @@ import { __prod__ } from './constants';
 import mikroOrmConfig from './config/mikro-orm';
 import { UserResolver } from './resolvers/UserResolver';
 import { Book } from './resolvers/Book';
+import path from 'path';
 
 const start = async () => {
   const PORT = 4000;
@@ -25,6 +26,7 @@ const start = async () => {
     schema: await buildSchema({
       resolvers: [UserResolver, Book],
       validate: false,
+      emitSchemaFile: path.resolve(__dirname, 'graphql/schema.gql'),
     }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
     context: () => ({ em: orm.em }),
