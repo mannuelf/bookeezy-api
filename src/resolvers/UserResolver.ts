@@ -45,6 +45,28 @@ export class UserResolver {
       password: hashedPassword,
     });
 
+    // TODO: email validation yup or express-validator
+    if (options.email.length <= 2) {
+      return {
+        errors: [
+          {
+            field: 'email',
+            message: 'email must have more than two letters',
+          },
+        ],
+      };
+    }
+
+    if (options.password.length <= 4) {
+      return {
+        errors: [
+          {
+            field: 'password',
+            message: 'password must have more than for characters',
+          },
+        ],
+      };
+    }
     try {
       await em.persistAndFlush(user);
     } catch (error) {
