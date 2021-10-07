@@ -1,5 +1,14 @@
 import 'reflect-metadata';
-import { Resolver, Ctx, InputType, Field, ObjectType, Mutation, Arg } from 'type-graphql';
+import {
+  Resolver,
+  Ctx,
+  InputType,
+  Field,
+  ObjectType,
+  Mutation,
+  Arg,
+  Query,
+} from 'type-graphql';
 import argon2 from 'argon2';
 import { AppContext } from '../types';
 import { User } from '../entities/User';
@@ -33,10 +42,22 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { req, em }: AppContext) {
+    console.log('😍: me', req.session);
+
+    // if not logged
+    if (!req.session.userId) {
+      return null;
+    }
+
+    return await em.findOne(User, { id: req.session.userId });
+  }
+
   @Mutation(() => UserResponse)
   async register(
     @Arg('options') options: InputEmailPassword,
-    @Ctx() { em }: AppContext,
+    @Ctx() { em, req }: AppContext,
   ): Promise<UserResponse> {
     const hashedPassword = await argon2.hash(options.password);
 
@@ -78,6 +99,13 @@ export class UserResolver {
       }
     }
 
+    /**
+     * store user ID session: keep logged in
+     */
+    console.log('🥥 register:', user.id);
+
+    req.session.userId = user.id;
+
     return { user };
   }
 
@@ -112,6 +140,8 @@ export class UserResolver {
     }
 
     // send the current user ID to backend for auth.
+    console.log('🥝 Login:', user.id);
+
     req.session.userId = user.id;
 
     return { user };

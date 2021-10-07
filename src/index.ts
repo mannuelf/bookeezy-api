@@ -27,18 +27,18 @@ const start = async () => {
 
   const RedisStore = connectRedis(session);
   const redisHost = '127.0.0.1';
-  const redisPort = 6379;
+  const redisPort = 6380;
   const redisClient = redis.createClient({
     host: redisHost,
+
     port: redisPort,
   });
 
   app.use(
     session({
-      name: 'b-eezy-id',
+      name: 'bookeezy-id',
       store: new RedisStore({
         client: redisClient,
-        disableTTL: true,
         disableTouch: true,
       }),
       cookie: {
@@ -48,7 +48,7 @@ const start = async () => {
         sameSite: 'none', // lax for prod
       },
       saveUninitialized: false,
-      secret: '98kdbeezykshh',
+      secret: '98kdbeezykshhsadasdasdjaksd',
       resave: false,
     }),
   );
