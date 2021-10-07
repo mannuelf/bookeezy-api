@@ -1,6 +1,5 @@
 import http from 'http';
 import path from 'path';
-// import cors from 'cors';
 import express from 'express';
 import redis from 'redis';
 import session from 'express-session';
@@ -25,9 +24,6 @@ const start = async () => {
   await generator.updateSchema();
 
   const app = express();
-  // app.use(cors());
-  // app.set('Access-Control-Allow-Origin', 'https://studio.apollographql.com');
-  // app.set('Access-Control-Allow-Credentials', 'true');
 
   const RedisStore = connectRedis(session);
   const redisHost = '127.0.0.1';
