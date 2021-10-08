@@ -17,7 +17,6 @@ import { CLIENT, __prod__ } from './constants';
 import { UserResolver } from './resolvers/UserResolver';
 import { Book } from './resolvers/Book';
 import { AppContext } from 'types';
-import REDIS from './config/redis';
 
 const start = async () => {
   const PORT = 4000;
@@ -46,12 +45,10 @@ const start = async () => {
   app.use(
     session({
       name: 'bookeezy-id',
-      store: REDIS.flag
-        ? new RedisStore({
-            client: redisClient,
-            disableTouch: true,
-          })
-        : undefined,
+      store: new RedisStore({
+        client: redisClient,
+        disableTouch: true,
+      }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
         httpOnly: true,
@@ -59,7 +56,7 @@ const start = async () => {
         sameSite: 'none', // lax for prod
       },
       saveUninitialized: false,
-      secret: REDIS.secret,
+      secret: process.env.REDIS_SECRET as string,
       resave: false,
     }),
   );
