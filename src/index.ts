@@ -1,6 +1,10 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import http from 'http';
 import path from 'path';
 import express from 'express';
+import cors from 'cors';
 import redis from 'redis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
@@ -9,15 +13,16 @@ import { MikroORM } from '@mikro-orm/core';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
-import { __prod__ } from './constants';
+import { CLIENT, __prod__ } from './constants';
 import { UserResolver } from './resolvers/UserResolver';
 import { Book } from './resolvers/Book';
 import { AppContext } from 'types';
+import REDIS from './config/redis';
 
 const start = async () => {
   const PORT = 4000;
-  const orm = await MikroORM.init(mikroOrmConfig);
 
+  const orm = await MikroORM.init(mikroOrmConfig);
   await orm.getMigrator().up();
 
   const generator = orm.getSchemaGenerator();
@@ -25,22 +30,28 @@ const start = async () => {
 
   const app = express();
 
-  const RedisStore = connectRedis(session);
-  const redisHost = '127.0.0.1';
-  const redisPort = 6380;
-  const redisClient = redis.createClient({
-    host: redisHost,
+  app.use(
+    cors({
+      origin: CLIENT.origin,
+      credentials: true,
+    }),
+  );
 
-    port: redisPort,
+  const RedisStore = connectRedis(session);
+  const redisClient = redis.createClient({
+    host: process.env.REDIS_CLUSTER,
+    password: process.env.REDIS_PASSWORD,
   });
 
   app.use(
     session({
       name: 'bookeezy-id',
-      store: new RedisStore({
-        client: redisClient,
-        disableTouch: true,
-      }),
+      store: REDIS.flag
+        ? new RedisStore({
+            client: redisClient,
+            disableTouch: true,
+          })
+        : undefined,
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
         httpOnly: true,
@@ -48,7 +59,7 @@ const start = async () => {
         sameSite: 'none', // lax for prod
       },
       saveUninitialized: false,
-      secret: '98kdbeezykshhsadasdasdjaksd',
+      secret: REDIS.secret,
       resave: false,
     }),
   );
@@ -71,13 +82,7 @@ const start = async () => {
 
   await apolloServer.start();
 
-  apolloServer.applyMiddleware({
-    app,
-    cors: {
-      credentials: true,
-      origin: true,
-    },
-  });
+  apolloServer.applyMiddleware({ app });
 
   await new Promise((resolve: any) => httpServer.listen({ port: PORT, resolve }));
   console.log(`💾 Server running on port: ${PORT}, path: ${apolloServer.graphqlPath}`);
