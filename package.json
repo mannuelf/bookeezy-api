@@ -58,7 +58,7 @@
     "@mikro-orm/reflection": "^4.5.9",
     "@types/cors": "^2.8.12",
     "@types/dotenv": "^8.2.0",
-    "apollo-server-core": "^3.10.1",
+    "apollo-server-core": "^3.11.1",
     "apollo-server-express": "^3.3.0",
     "argon2": "^0.28.2",
     "class-validator": "^0.13.1",
